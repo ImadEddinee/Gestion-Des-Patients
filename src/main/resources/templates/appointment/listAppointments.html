@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template.html">
+<body>
+<div layout:fragment="pageContent">
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header text-center fw-light">Liste des Patients</div>
+            <div class="card-body">
+                <div class="card-title">
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Appointment Date</th>
+                        <th>Appointment Time</th>
+                        <th>Doctor Name</th>
+                        <th>Speciality</th>
+                        <th>Phone Number</th>
+                        <th>Created At</th>
+                        <th>Delete RDV</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="appointment : ${appointments}">
+                        <td th:text="${appointment.id}"></td>
+                        <td th:text="${appointment.appointmentDate}"></td>
+                        <td th:text="${appointment.appointmentDate}"></td>
+                        <td th:text="${appointment.doctor.firstName}"></td>
+                        <td th:text="${appointment.doctor.speciality}"></td>
+                        <td th:text="${appointment.doctor.phoneNumber}"></td>
+                        <td th:text="${appointment.createdAt}"></td>
+                        <td>
+                            <form th:method="delete" th:action="@{appointments/{id}(id=${appointment.id})}">
+                                <input type="submit" value="Delete RDV" >
+                            </form>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+</body>

@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="template.html">
+<body>
+<div layout:fragment="pageContent">
+    <div class="container">
+        <div class="card mt-5">
+            <div class="card-header">
+                Liste of doctors
+            </div>
+            <div class="card-body">
+                <div class="card-title">
+                    <div class="row">
+                        <div class="col col-3">
+                            <form method="GET" th:action="@{doctors}">
+                                <div class="input-group mb-3">
+                                    <span class="input-group-text" id="keyword">
+                                        <button class="btn btn-sm">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </span>
+                                    <input type="text" class="form-control"
+                                           name="keyword" placeholder="Search By Name ..."
+                                           th:value="${keyword}">
+                                </div>
+                            </form>
+                        </div>
+                        <div class="col col-6"></div>
+                        <div class="col col-3">
+                            <form method="GET" th:action="@{doctors}">
+                                <div class="input-group mb-3">
+                                    <input list="specialities" class="form-control" id="filtre"
+                                           name="filtre" placeholder="Search By Speciality ...">
+                                    <datalist id="specialities" >
+                                        <option th:each="speciality:${specialities}" th:text="${speciality.name()}">
+                                    </datalist>
+                                    <span class="input-group-text" >
+                                        <button class="btn btn-sm">
+                                            <i class="bi bi-search"></i>
+                                        </button>
+                                    </span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <table class="table">
+                    <thead>
+                    <tr>
+                        <th>firstName</th>
+                        <th>lastName</th>
+                        <th>Speciality</th>
+                        <th>Address</th>
+                        <th>PhoneNumber</th>
+                        <th>get rdv</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="doctor:${doctors}">
+                        <td th:text="${doctor.firstName}"></td>
+                        <td th:text="${doctor.lastName}"></td>
+                        <td th:text="${doctor.speciality}"></td>
+                        <td th:text="${doctor.address}"></td>
+                        <td th:text="${doctor.phoneNumber}"></td>
+                        <td>fgd</td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

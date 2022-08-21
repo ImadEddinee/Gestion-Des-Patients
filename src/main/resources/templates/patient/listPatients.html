@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+        layout:decorate="template.html">
+<body>
+<div layout:fragment="pageContent">
+    <div class="container">
+        <div class="row">
+            <div class="col col-3">
+                <ul class="list-group mt-5">
+                    <a class="link-light fw-light" th:href="@{patients(filtre='all',keyword=${keyword})}">
+                        <li th:class="${filtre.equalsIgnoreCase('rdv')?'list-group-item d-flex justify-content-between align-items-center':'active list-group-item d-flex justify-content-between align-items-center'}">
+                            All Patient
+                            <div th:if="${!filtre.equalsIgnoreCase('rdv')}">
+                                <span class="badge bg-primary rounded-pill" th:text="${totalPatients}"></span>
+                            </div>
+                        </li>
+                    </a>
+                    <a class="link-light fw-light" th:href="@{patients(filtre='rdv',keyword=${keyword})}">
+                        <li th:class="${filtre.equalsIgnoreCase('rdv')?'active list-group-item d-flex justify-content-between align-items-center':'list-group-item d-flex justify-content-between align-items-center'}">
+                            Patients Ayant un RDV
+                            <div th:if="${filtre.equalsIgnoreCase('rdv')}">
+                                <span class="badge bg-primary rounded-pill" th:text="${totalPatients}"></span>
+                            </div>
+                        </li>
+                    </a>
+                </ul>
+            </div>
+            <div class="col col-9">
+                <div class="card mt-5">
+                    <div class="card-header text-center fw-light">Liste des Patients</div>
+                    <div class="card-body">
+                        <div class="card-title">
+                            <form method="GET" th:action="@{patients}">
+                                <div class="input-group mb-3">
+                        <span class="input-group-text" id="keyword">
+                            <i class="bi bi-search"></i>
+                        </span>
+                                    <input type="text" class="form-control"
+                                           name="keyword" placeholder="Search By Name ..."
+                                           th:value="${keyword}">
+                                    <button class="btn btn-secondary">Search</button>
+                                </div>
+                            </form>
+                        </div>
+                        <table class="table">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>First Name</th>
+                                <th>Last Name</th>
+                                <th>Email</th>
+                                <th>Phone Number</th>
+                                <div th:if="${filtre.equalsIgnoreCase('rdv')}">
+                                    <th>Liste des RDV</th>
+                                </div>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            <tr th:each="patient : ${patients}">
+                                <td th:text="${patient.id}"></td>
+                                <td th:text="${patient.firstName}"></td>
+                                <td th:text="${patient.lastName}"></td>
+                                <td th:text="${patient.email}"></td>
+                                <td th:text="${patient.phoneNumber}"></td>
+                                <div th:if="${filtre.equalsIgnoreCase('rdv')}">
+                                    <td><a th:href="@{patients/{id}/appointments(id=${patient.id})}" >RDV</a></td>
+                                </div>
+                            </tr>
+                            </tbody>
+                        </table>
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a aria-label="Previous"
+                                       th:href="@{patients(page=${navigation[0] - 3},keyword=${keyword})}"
+                                       th:class="${navigation[0] - 1 < 0?'page-link disabled':'page-link'}">
+                                        <span aria-hidden="true">&laquo;</span>
+                                    </a>
+                                </li>
+                                <li class="page-item" th:each="nav:${navigation}">
+                                    <a th:text="${nav + 1}"
+                                       th:class="${totalPages >= nav+1?'page-link':'page-link disabled'}"
+                                       th:href="@{patients(page=${nav},keyword=${keyword})}"></a>
+                                </li>
+                                <li class="page-item">
+                                    <a aria-label="Next"
+                                       th:href="@{patients(page=${navigation[2] + 1},keyword=${keyword})}"
+                                       th:class="${totalPages >= navigation[2] + 1?'page-link':'page-link disabled'}">
+                                        <span aria-hidden="true">&raquo;</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
